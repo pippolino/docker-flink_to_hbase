@@ -1,0 +1,6 @@
+#!/bin/bash
+
+logs_dir=/data/logs
+
+echo "start flink local"
+exec /opt/flink/bin/start-local.sh 2>&1
