@@ -9,6 +9,8 @@ MAINTAINER Federico Soldani <pippo@daemon-ware.com>
 
 COPY *.sh /build/
 
+RUN chmod +x /build/*.sh
+
 # Configure version
 ENV FLINK_VERSION=1.3.2 \
     HADOOP_VERSION=27 \
