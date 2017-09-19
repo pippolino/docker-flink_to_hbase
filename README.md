@@ -19,7 +19,7 @@ but this hasn't been fixed yet.
 Build Image
 -----------
 
-    $ docker build -t dajobe/hbase .
+    $ docker build -t pippolino/flink_to_hbase .
 
 
 Pull image
@@ -27,33 +27,25 @@ Pull image
 
 If you want to pull the image already built then use this
 
-    $ docker pull dajobe/hbase
+    $ docker pull pippolino/flink_to_hbase
 
-More details at https://hub.docker.com/r/dajobe/hbase/
+More details at https://hub.docker.com/r/pippolino/flink_to_hbase/
 
 
-Run HBase
+Run Image
 ---------
 
 To run HBase by hand:
 
-    $ mkdir data
-    $ id=$(docker run --name=hbase-docker -h hbase-docker -d -v $PWD/data:/data dajobe/hbase)
+    $ docker run --name flink_to_hbase -p 8080:8080 -p 8085:8085 -p 9090:9090 -p 9095:9095 -p 2181:2181 -p 16000:16000 -p 16010:16010 -p 16020:16020 -p 16030:16030 -p 6123:6123 -p 8081:8081 --hostname hbase-docker --add-host hbase-docker:172.17.0.2 pippolino/flink_to_hbase:latest
 
-To run it and adjust the host system's locally by editing
-`/etc/hosts` to alias the DNS hostname 'hbase-docker' to the
-container, use this:
+Connect with bash
+---------
 
-    $ ./start-hbase.sh
+For connect to container:
 
-This will require you to enter your sudo password to edit the host
-machine's `/etc/hosts` file
-
-If you want to run multiple hbase dockers on the same host, you can
-give them different hostnames with the '-h' / '--hostname' argument.
-You may have to give them different ports though.  Not tested.
-
-
+    $ docker exec -it "id of running container" bash
+    
 Find Hbase status
 -----------------
 
@@ -95,74 +87,6 @@ To see the individual log files without using `docker`, look into
 the data volume dir eg $PWD/data/logs if invoked as above.
 
 
-Test HBase is working via python over Thrift
---------------------------------------------
-
-Here I am connecting to a docker container with the name 'hbase-docker'
-(such as created by the start-hbase.sh script).  The port 9090 is the
-Thrift API port because [Happybase][1] [2] uses Thrift to talk to HBase.
-
-    $ ipython
-    Python 2.7.9 (default, Mar  1 2015, 12:57:24)
-    Type "copyright", "credits" or "license" for more information.
-    
-    IPython 2.3.0 -- An enhanced Interactive Python.
-    ?         -> Introduction and overview of IPython's features.
-    %quickref -> Quick reference.
-    help      -> Python's own help system.
-    object?   -> Details about 'object', use 'object??' for extra details.
-    
-    In [1]: import happybase
-    
-    In [2]: connection = happybase.Connection('hbase-docker', 9090)
-    
-    In [3]: connection.create_table('table-name', { 'family': dict() } )
-    
-    In [4]: connection.tables()
-    Out[4]: ['table-name']
-    
-    In [5]: table = connection.table('table-name')
-    
-    In [6]: table.put('row-key', {'family:qual1': 'value1', 'family:qual2': 'value2'})
-    
-    In [7]: for k, data in table.scan():
-       ...:     print k, data
-       ...:
-    row-key {'family:qual1': 'value1', 'family:qual2': 'value2'}
-    
-    In [8]:
-    Do you really want to exit ([y]/n)? y
-    $
-
-(Simple install for happybase: `sudo pip install happybase` although I
-use `pip install --user happybase` to get it just for me)
-
-
-Test HBase is working from Java
--------------------------------
-
-    $ docker run --rm -it --link $id:hbase-docker dajobe/hbase hbase shell
-    HBase Shell; enter 'help<RETURN>' for list of supported commands.
-    Type "exit<RETURN>" to leave the HBase Shell
-    Version 0.94.11, r1513697, Wed Aug 14 04:54:46 UTC 2013
-
-    hbase(main):001:0> status
-    1 servers, 0 dead, 3.0000 average load
-
-    hbase(main):002:0> list
-    TABLE
-    table-name
-    1 row(s) in 0.0460 seconds
-
-Showing the `table-name` table made in the happybase example above.
-
-Alternatively if you have the Hbase distribution available on the
-host you can use `bin/hbase shell` if the hbase configuration has
-been set up to connect to host `hbase-docker` zookeeper port 2181 to
-get the servers via configuration property `hbase.zookeeper.quorum`
-
-
-
 Proxy HBase UIs locally
 -----------------------
 
@@ -190,9 +114,6 @@ The bottom line, you can use these URLs to see what's going on:
 to see what's going on in the container and since both your local
 machine and the container are using localhost (aka 127.0.0.1), even
 the links work!
-
-
-
 
 
 Notes

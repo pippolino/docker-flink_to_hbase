@@ -5,6 +5,9 @@
 
 logs_dir=/data/logs
 
+#echo "set the ephemeral port range for hbase region servers"
+#echo "49990   49999" >/proc/sys/net/ipv4/ip_local_port_range
+
 # Prepare environment
 /opt/replace-hostname
 mkdir -p $logs_dir /data/hbase /data/run
@@ -19,7 +22,10 @@ hbase thrift start > $logs_dir/hbase-thrift.log 2>&1 &
 echo "hbase rest start logging to $logs_dir/hbase-rest.log"
 hbase rest start > $logs_dir/hbase-rest.log 2>&1 &
 
+exec hbase zookeeper 2>&1 | tee $logs_dir/zookeeper.log &
+exec hbase regionserver start 2>&1 | tee $logs_dir/logregion.log &
+
 # Master server (Foreground) that also starts the region server
 # Ports: Master: 16000 API, 16010 UI; 2181 ZK;  Region: 16020 API, 16030 UI
 echo "hbase master start logging to $logs_dir/hbase-master.log"
-exec hbase master start 2>&1 | tee $logs_dir/hbase-master.log
+exec hbase master --localRegionServers=0 start 2>&1 | tee $logs_dir/hbase-master.log
