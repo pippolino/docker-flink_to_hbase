@@ -53,7 +53,7 @@ EXPOSE 16000
 # HBase Master web UI at :16010/master-status;  ZK at :16010/zk.jsp
 EXPOSE 16010
 # HBase Region Servers
-EXPOSE 16020 16030 16200
+EXPOSE 16020 16030
 # Flink
 EXPOSE 6123
 # Flink web UI
