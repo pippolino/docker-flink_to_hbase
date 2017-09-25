@@ -1,0 +1,16 @@
+#!/bin/bash
+
+logs_dir=/data/logs
+
+if [ ! -z ${VIEWER_PATH} ]; then
+    if [ -f ${VIEWER_PATH} ]; then
+        while ! nc -z localhost 2181; do   
+            sleep 0.1 # wait for 1/10 of the second before check again
+        done
+    
+        mkdir -p $logs_dir
+
+        echo "start viewer"
+        exec java -jar ${VIEWER_PATH} > $logs_dir/viewer.log
+    fi
+fi

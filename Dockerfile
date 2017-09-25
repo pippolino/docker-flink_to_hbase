@@ -15,7 +15,8 @@ RUN chmod +x /build/*.sh
 ENV FLINK_VERSION=1.3.2 \
     HADOOP_VERSION=27 \
     SCALA_VERSION=2.11 \
-    HBASE_VERSION=1.3.1
+    HBASE_VERSION=1.3.1 \
+    VIEWER_PATH=
 
 RUN /build/prepare-flink.sh
     
@@ -37,6 +38,7 @@ ADD ./replace-hostname /opt/replace-hostname
 
 ADD ./hbase-server /opt/hbase-server
 ADD ./flink-server /opt/flink-server
+ADD ./viewer-server /opt/viewer-server
 
 # REST API
 EXPOSE 8080
@@ -58,5 +60,7 @@ EXPOSE 16020 16030
 EXPOSE 6123
 # Flink web UI
 EXPOSE 8081
+# SpringBoot Viewer web UI
+EXPOSE 8090
 
-CMD "/opt/flink-server"; "/opt/hbase-server"
+CMD "/opt/flink-server"; "/opt/hbase-server"; "/opt/viewer-server";
