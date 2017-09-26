@@ -1,16 +1,22 @@
 #!/bin/bash
 
-logs_dir=/data/logs
+start_viewer() {
+    logs_dir=/data/logs
+    sts_cmd="true &>/dev/null </dev/tcp/127.0.0.1/2181 && echo open || echo closed"
+    if [ ! -z ${VIEWER_PATH} ]; then
+        if [ -f ${VIEWER_PATH} ]; then            
+            sts=$($sts_cmd)
+            while [ "$sts" == "closed" ]; do
+                sleep 1.0
+                sts=$($sts_cmd)
+            done
+        
+            mkdir -p $logs_dir
 
-if [ ! -z ${VIEWER_PATH} ]; then
-    if [ -f ${VIEWER_PATH} ]; then
-        while ! nc -z localhost 2181; do   
-            sleep 0.1 # wait for 1/10 of the second before check again
-        done
-    
-        mkdir -p $logs_dir
-
-        echo "start viewer"
-        exec java -jar ${VIEWER_PATH} > $logs_dir/viewer.log
+            echo "start viewer"
+            exec java -jar ${VIEWER_PATH} > $logs_dir/viewer.log
+        fi
     fi
-fi
+}
+
+start_viewer &

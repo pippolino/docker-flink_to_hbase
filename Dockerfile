@@ -16,26 +16,24 @@ ENV FLINK_VERSION=1.3.2 \
     HADOOP_VERSION=27 \
     SCALA_VERSION=2.11 \
     HBASE_VERSION=1.3.1 \
-    VIEWER_PATH=
-
-RUN /build/prepare-flink.sh
+    VIEWER_PATH=/data/viewer/factsViewer.jar
     
+RUN /build/prepare-flink.sh
+
 RUN /build/prepare-hbase.sh && \
     cd /opt/hbase && /build/build-hbase.sh \
     cd / && /build/cleanup-hbase.sh
-
+    
 RUN rm -rf /build
 
 VOLUME /data
 
 ADD ./flink-conf.yaml /opt/flink/conf/flink-conf.yaml
-
 ADD ./hbase-site.xml /opt/hbase/conf/hbase-site.xml
-
 ADD ./zoo.cfg /opt/hbase/conf/zoo.cfg
-
 ADD ./replace-hostname /opt/replace-hostname
 
+ADD ./print-logo /opt/print-logo
 ADD ./hbase-server /opt/hbase-server
 ADD ./flink-server /opt/flink-server
 ADD ./viewer-server /opt/viewer-server
@@ -63,4 +61,4 @@ EXPOSE 8081
 # SpringBoot Viewer web UI
 EXPOSE 8090
 
-CMD "/opt/flink-server"; "/opt/hbase-server"; "/opt/viewer-server";
+CMD "/opt/print-logo"; "/opt/flink-server"; "/opt/viewer-server"; "/opt/hbase-server";
