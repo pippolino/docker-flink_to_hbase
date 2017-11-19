@@ -37,7 +37,7 @@ Run Image
 
 To run HBase by hand:
 
-    $ docker run --name flink_to_hbase -p 8080:8080 -p 8085:8085 -p 9090:9090 -p 9095:9095 -p 2181:2181 -p 16000:16000 -p 16010:16010 -p 16020:16020 -p 16030:16030 -p 6123:6123 -p 8081:8081 -p 8090:8090 --hostname hbase-docker --add-host hbase-docker:172.17.0.2 pippolino/flink_to_hbase:latest
+    $ docker run --name flink_to_hbase -p 8080:8080 -p 8085:8085 -p 9090:9090 -p 9092: 9092 -p 9095:9095 -p 2181:2181 -p 16000:16000 -p 16010:16010 -p 16020:16020 -p 16030:16030 -p 6123:6123 -p 7203: 7203 -p 8081:8081 -p 8090:8090 --hostname hbase-docker --add-host hbase-docker:172.17.0.2 pippolino/flink_to_hbase:latest
 
 Connect with bash
 ---------
