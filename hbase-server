@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Start HBase
 #  1) thrift API/Web UI
 #  2) hbase master (which runs the local region server)
