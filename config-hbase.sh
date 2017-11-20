@@ -15,7 +15,6 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 minimal_apt_get_args='-y --no-install-recommends'
 
-
 ## Build time dependencies ##
 
 HBASE_BUILD_PACKAGES="curl"
@@ -28,3 +27,5 @@ HBASE_BUILD_PACKAGES="curl"
 
 ## Run time dependencies ##
 HBASE_RUN_PACKAGES="openjdk-8-jre-headless"
+
+HBASE_AUTO_ADDED_PACKAGES=`apt-mark showauto`

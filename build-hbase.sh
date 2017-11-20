@@ -1,6 +1,6 @@
-#!/bin/sh -x
+#!/bin/bash
 
-. /build/config-hbase.sh
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 here=$(pwd)
 

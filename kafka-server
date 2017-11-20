@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # If a ZooKeeper container is linked with the alias `zookeeper`, use it.
 # You MUST set ZOOKEEPER_IP in env otherwise.
@@ -65,7 +65,7 @@ start_kafka() {
 
 	mkdir -p $logs_dir
 
-	echo "Starting kafka"
+	echo "start kafka"
 	exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties > $logs_dir/kafka.log
 }
 

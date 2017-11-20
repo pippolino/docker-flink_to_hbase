@@ -1,8 +1,6 @@
-#!/bin/sh -x
+#!/bin/bash
 
 . /build/config-kafka.sh
-
-apt-get update -y
 
 apt-get install $minimal_apt_get_args $KAFKA_BUILD_PACKAGES
 
