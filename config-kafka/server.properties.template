@@ -41,8 +41,8 @@ advertised.port={{KAFKA_ADVERTISED_PORT}}
 ############################# Log Basics #############################
 
 # The directory under which to store log files
-log.dir=/data/logs/
-log.dirs=/data/logs/
+log.dir=/tmp/kafka/
+log.dirs=/tmp/kafka/
 
 # The number of logical partitions per topic per server. More partitions allow greater parallelism
 # for consumption, but also mean more files.
@@ -76,5 +76,6 @@ inter.broker.protocol.version={{KAFKA_INTER_BROKER_PROTOCOL_VERSION}}
 log.message.format.version={{KAFKA_LOG_MESSAGE_FORMAT_VERSION}}
 message.max.bytes={{KAFKA_MESSAGE_MAX_BYTES}}
 replica.fetch.max.bytes={{KAFKA_REPLICA_FETCH_MAX_BYTES}}
+offsets.topic.replication.factor=1
 
 # vim:set filetype=jproperties

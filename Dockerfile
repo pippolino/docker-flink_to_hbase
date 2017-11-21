@@ -1,6 +1,6 @@
 # Flink to HBase in Docker
 #
-# Version 1.2
+# Version 1.3
 
 # http://docs.docker.io/en/latest/use/builder/
 
@@ -23,11 +23,13 @@ ENV FLINK_VERSION=1.3.2 \
     HBASE_VERSION=1.3.1 \
     KAFKA_VERSION=1.0.0 \
     KAFKA_API_VERSION=1.0 \
+    ZOOKEEPER_VERSION=3.4.10 \
     JMX_PORT=7203 \
     VIEWER_PATH=/data/viewer/factsViewer.jar
 
 RUN /build/prepare-kafka.sh
 RUN /build/prepare-flink.sh
+RUN /build/prepare-zookeeper.sh
 RUN /build/prepare-hbase.sh && cd /opt/hbase && /build/build-hbase.sh
 
 RUN cd / && /build/cleanup.sh
@@ -52,6 +54,8 @@ RUN chmod +x /opt/hbase-server
 RUN chmod +x /opt/flink-server
 RUN chmod +x /opt/kafka-server
 RUN chmod +x /opt/viewer-server
+
+RUN apt-get update && apt-get install -y vim
 
 # REST API
 EXPOSE 8080

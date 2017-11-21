@@ -11,13 +11,15 @@ IP=$(grep "\s${HOSTNAME}$" /etc/hosts | head -n 1 | awk '{print $1}')
 # string with multiple ZooKeeper hosts
 [ -z "$ZOOKEEPER_CONNECTION_STRING" ] && ZOOKEEPER_CONNECTION_STRING="${ZOOKEEPER_IP:-127.0.0.1}:${ZOOKEEPER_PORT:-2181}"
 
+[ -z "$ZOOKEEPER_CHROOT" ] && ZOOKEEPER_CHROOT="/kafka"
+
 cat /opt/kafka/config/server.properties.template | sed \
-  -e "s|{{KAFKA_ADVERTISED_HOST_NAME}}|${KAFKA_ADVERTISED_HOST_NAME:-$IP}|g" \
+  -e "s|{{KAFKA_ADVERTISED_HOST_NAME}}|${KAFKA_ADVERTISED_HOST_NAME:-localhost}|g" \
   -e "s|{{KAFKA_ADVERTISED_PORT}}|${KAFKA_ADVERTISED_PORT:-9092}|g" \
   -e "s|{{KAFKA_AUTO_CREATE_TOPICS_ENABLE}}|${KAFKA_AUTO_CREATE_TOPICS_ENABLE:-true}|g" \
   -e "s|{{KAFKA_BROKER_ID}}|${KAFKA_BROKER_ID:-0}|g" \
   -e "s|{{KAFKA_DEFAULT_REPLICATION_FACTOR}}|${KAFKA_DEFAULT_REPLICATION_FACTOR:-1}|g" \
-  -e "s|{{KAFKA_DELETE_TOPIC_ENABLE}}|${KAFKA_DELETE_TOPIC_ENABLE:-false}|g" \
+  -e "s|{{KAFKA_DELETE_TOPIC_ENABLE}}|${KAFKA_DELETE_TOPIC_ENABLE:-true}|g" \
   -e "s|{{KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS}}|${KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS:-300000}|g" \
   -e "s|{{KAFKA_INTER_BROKER_PROTOCOL_VERSION}}|${KAFKA_INTER_BROKER_PROTOCOL_VERSION:-$KAFKA_API_VERSION}|g" \
   -e "s|{{KAFKA_LOG_MESSAGE_FORMAT_VERSION}}|${KAFKA_LOG_MESSAGE_FORMAT_VERSION:-$KAFKA_API_VERSION}|g" \
@@ -56,7 +58,7 @@ fi
 
 start_kafka() {
     logs_dir=/data/logs
-    sts_cmd="true &>/dev/null </dev/tcp/127.0.0.1/2181 && echo open || echo closed"           
+    sts_cmd="true &>/dev/null </dev/tcp/127.0.0.1/2181 && echo open || echo closed"
 	sts=$($sts_cmd)
 	while [ "$sts" == "closed" ]; do
 		sleep 1.0
