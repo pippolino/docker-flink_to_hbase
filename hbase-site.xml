@@ -28,4 +28,13 @@
     <name>hbase.regionserver.ipc.address</name>
     <value>0.0.0.0</value>
   </property>
+  
+  <property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>2181</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/data/zookeeper</value>
+  </property>
 </configuration>
