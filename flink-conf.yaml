@@ -225,3 +225,6 @@ jobmanager.web.port: 8081
 # The configuration below must match one of the values set in "security.kerberos.login.contexts"
 # zookeeper.sasl.login-context-name: Client
 env.log.dir: /data/logs
+
+# Log
+env.java.opts: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+LogCompilation -XX:LogFile=${FLINK_LOG_PREFIX}.jit -XX:+PrintAssembly
