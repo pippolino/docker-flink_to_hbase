@@ -83,5 +83,7 @@ EXPOSE ${JMX_PORT}
 EXPOSE 8081
 # SpringBoot Viewer web UI
 EXPOSE 8090
+# JMX
+EXPOSE 9999
 
 CMD "/opt/print-logo"; "/opt/flink-server"; "/opt/viewer-server"; "/opt/kafka-server"; "/opt/hbase-server";
