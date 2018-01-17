@@ -5,7 +5,10 @@
 # http://docs.docker.io/en/latest/use/builder/
 
 FROM ubuntu:xenial
-MAINTAINER Federico Soldani <pippo@daemon-ware.com>
+
+LABEL maintainer="Federico Soldani <pippo@daemon-ware.com>"
+LABEL version="1.3"
+LABEL description="Image for realtime analyzing with FLink stream processing and HBase storage"
 
 COPY ./prepare-system.sh /build/prepare-system.sh
 
